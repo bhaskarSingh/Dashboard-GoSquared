@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import Layout from "./components/Layout";
+import Header from "./components/Header";
+import Dashboard from "./components/Dashboard";
+import { useEffect, useState } from "react";
+import axios from "axios";
 function App() {
+  const [data, updateData] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3004/data")
+      .then(res => {
+        updateData(res.data);
+      })
+      .catch(err => console.log(err));
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Header />
+      <Dashboard items={data} />
+    </Layout>
   );
 }
 
